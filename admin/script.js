@@ -457,11 +457,12 @@ $('.page-content').on('click','#rides-canc-sort-desc-admin',function(){
     var sort="desc";
     canceledRidesAll(sort);
 });
-function canceledRidesAll(){
+function canceledRidesAll(sort){
     $.ajax({
         url: '../user/user.php',
         method: 'post',
         data: {
+            sort: sort,
             canceledridesall: true
         },
         dataType: 'json',
@@ -946,7 +947,7 @@ $(document).ready(function(){
     defaultHtml();
 });
 $('#addlocation').click(function(){
-    $html='<div class="signup-form">\
+    var html='<div class="signup-form">\
         <label for="location">Location</label>\
         <div>\
             <input type="text" name="location" id="location" placeholder="location.." required>\
@@ -959,7 +960,7 @@ $('#addlocation').click(function(){
             <input type="submit" value="ADD LOCATION" name="addlocation" id="locationadd">\
         </div>\
     </div>';
-    $('.page-content').html($html);
+    $('.page-content').html(html);
 });
 $('.page-content').on('click','#locationadd',function(){
     var location=$('#location').val();

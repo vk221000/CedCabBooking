@@ -412,7 +412,7 @@ if (isset($_POST['filterbydateadmin'])) {
 if (isset($_POST['canceledridesall'])) {
     include '../admin/tbl_ride.php';
     $tblride=new tblRide();
-    $sort=0;
+    $sort=$_POST['sort'];
     $data=$tblride->canceledRidesAll($sort);
     if ($data!=false){
         $row=array();

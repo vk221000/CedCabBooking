@@ -38,7 +38,7 @@
             }
         }
         public function checkUserDuplicate($username){
-            $sql="SELECT * FROM `tbl_user` WHERE `user_name`='$username'";
+            $sql="SELECT * FROM `tbl_user` WHERE `user_name` LIKE '$username'";
             $data=$this->conn->query($sql);
             if ($data->num_rows>0) {
                 return true;

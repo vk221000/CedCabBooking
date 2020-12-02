@@ -100,6 +100,8 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
                 $userid=$_SESSION['user'][1];
                 if ($tblride->insertData($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare,$userid)===true) {
                     $_SESSION['booked']=array($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare);
+                    $_SESSION['start'] = time();
+                    $_SESSION['expire'] = $_SESSION['start'] + (3 * 60);
                     echo "please wait for the confirmation";
                 } else {
                     echo "error";
@@ -107,6 +109,8 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
             }
             else {
                 $_SESSION['booking']=array($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare);
+                $_SESSION['start'] = time();
+                $_SESSION['expire'] = $_SESSION['start'] + (3 * 60);
                 echo "refer to login page";
             }
         }

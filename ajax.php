@@ -106,6 +106,8 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
             }
             else {
                 $_SESSION['booking']=array($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare);
+                $_SESSION['start'] = time();
+                $_SESSION['expire'] = $_SESSION['start'] + (3 * 60);
                 echo "refer to login page";
             }
         }
