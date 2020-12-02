@@ -135,6 +135,22 @@
             }
             return false;
         }
+        public function lastBooked($userid){
+            $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' AND `user_id`='$userid' ORDER BY `ride_date` ASC";
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function rideRequestsLast(){
+            $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' ORDER BY `ride_date` ASC";
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
         public function acceptRide($id){
             $sql="UPDATE `tbl_ride` SET `status`='2' WHERE `ride_id`='$id'";
             if ($this->conn->query($sql)) {

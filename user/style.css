@@ -178,6 +178,62 @@ label.input-group-text {
     background-color: yellowgreen;
     color: white;
 }
+#customer-pending-flash {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 100px;
+  }
+  
+#customer-pending-flash td, #customer-pending-flash th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+  
+#customer-pending-flash tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+  
+#customer-pending-flash tr:hover {
+    background-color: #ddd;
+}
+  
+#customer-pending-flash th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4C516D;
+    color: white;
+    /* rgb(53, 93, 99) */
+}
+#admin-pending-flash {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+#admin-pending-flash td, #admin-pending-flash th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+  
+#admin-pending-flash tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+  
+#admin-pending-flash tr:hover {
+    background-color: #ddd;
+}
+  
+#admin-pending-flash th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #46523C;
+    color: white;
+    /* rgb(53, 93, 99) */
+}
 .footer-dashboard{
     position: fixed;
     left: 0;
@@ -254,6 +310,16 @@ nav.sticky {
 } */ 
 .bold-span{
     font-size: x-large;
-    font-weight: 100;
+    font-weight: 200;
     color: black;
 }
+.blink_me {
+    animation: blinker 1s linear infinite;
+    color: red;
+  }
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }

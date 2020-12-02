@@ -26,28 +26,37 @@ $('#submit').click(function(){
     var drop=$('#inputGroupSelect02').val();
     var cabtype=$('#inputGroupSelect03').val();
     var luggage=$('#luggage').val();
-    $.ajax({
-        url: 'ajax.php',
-        method: 'post',
-        data: {
-            pickup: pickup,
-            drop: drop,
-            cabtype: cabtype,
-            luggage: luggage,
-            submit: true
-        },
-        success: function(msg){
-            if (msg=="please fill pickup, drop and cab type"){
-                $('#message-show').text(msg);
+    if ((pickup==drop)) {
+        $('#book-cab').hide();
+        $('#message-show').text("please choose different pickup and drop locations");
+
+    }
+    else {
+        $.ajax({
+            url: 'ajax.php',
+            method: 'post',
+            data: {
+                pickup: pickup,
+                drop: drop,
+                cabtype: cabtype,
+                luggage: luggage,
+                submit: true
+            },
+            success: function(msg){
+                if (msg=="please fill pickup, drop and cab type"){
+                    $('#book-cab').hide();
+                    $('#message-show').text(msg);
+                }
+                else{
+                    $('#book-cab').show();
+                    $('#message-show').text("Total fare: ₹"+msg);
+                }
+            },
+            error: function(){
+                alert(error);
             }
-            else{
-                $('#message-show').text("Total fare: ₹"+msg);
-            }
-        },
-        error: function(){
-            alert(error);
-        }
-    });
+        });
+    }
 });
 $('#book-cab').click(function(){
     var pickup=$('#inputGroupSelect01').val();
@@ -66,6 +75,7 @@ $('#book-cab').click(function(){
         },
         success: function(msg){
             $('#submit').text(msg);
+            setTimeout(function(){$(location).attr('href','user_dashboard.php');}, 3000);
         },
         error: function(){
             alert(error);
@@ -195,10 +205,10 @@ $('.page-content').on('click','#fare-all-user-desc',function(){
 });
 
 $('#pendingrides').click(function(){
-    pendingRides()
+    pendingRides();
 });
 $('.page-content').on('click','#pendingrides',function(){
-    pendingRides()
+    pendingRides();
 });
 function pendingRides(){
     $.ajax({
@@ -446,9 +456,12 @@ function defaultHtml(){
                 <div class="tiles text-center"><p>Pending Rides</p><p>'+pendingrides+'</p><p id="card-ride-request"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="pendingrides">Pending Rides</a></div>\
                 <div class="tiles text-center"><p>Completed Rides</p><p>'+completedrides+'</p><p id="card-completed-rides"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="completedrides">Completed Rides</a></div>\
                 <div class="tiles text-center"><p>All Rides</p><p>'+allrides+'</p><p id="card-all-rides"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="previousrides">All Rides</a></div>\
-                <div class="tiles text-center"><p>Total Expanses</p><p>₹ '+totalexpanses+'</p><p id="card-total-expanses"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="totalexpanses">Total Expanses</a></div>\
-                </div>';
-            $('.page-content').html(html);
+                <div class="tiles text-center"><p>Total Expanses</p><p>₹ '+totalexpanses+'</p><p id="card-total-expanses"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="totalexpanses">Total Expanses</a></div></div>';
+                if (msg["lastbooked"]!=0) {
+                    html+='<table id="customer-pending-flash"><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th><th>Status</th></tr>\
+                    <tr><td>'+msg["lastbooked"]["from"]+'</td><td>'+msg["lastbooked"]["to"]+'</td><td>'+msg["lastbooked"]["cab_type"]+'</td><td>'+msg["lastbooked"]["ride_date"]+'</td><td>'+msg["lastbooked"]["total_distance"]+'</td><td>'+msg["lastbooked"]["luggage"]+'</td><td>'+msg["lastbooked"]["total_fare"]+'</td><td><div class="blink_me">Pending</div></td></tr></table>';    
+                }
+                $('.page-content').html(html);
         },
         error: function(){
             alert('error');

@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (isset($_SESSION['admin'])) {
+    header('Location:admin/admin-dashboard.php');
+}
 include 'admin/tbl_location.php';
 $tbl=new tblLocation();
 ?>
@@ -46,6 +49,7 @@ $tbl=new tblLocation();
                     echo $html;
                 } else {
                     $html='<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>';
+                    $html.='<li class="nav-item"><a class="nav-link" href="signup.php">signup</a></li>';
                     echo $html;
                 }
                 ?>

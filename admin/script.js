@@ -628,7 +628,12 @@ function allUsers(){
             var html="<table id='customers'><tr><th>UserName</th><th>Name  <a href='javascript:void(0)' id='name-asc-sort-admin'>&#8657;</a><a href='javascript:void(0)' id='name-desc-sort-admin'>&#8659;</a></th><th>DateofSignup(YYYY-MM-DD)     <a href='javascript:void(0)' id='date-asc-sort-admin' >&#8657;</a><a href='javascript:void(0)'  id='date-desc-sort-admin'>&#8659;</a></th><th>Mobile</th><th>Action</th></tr>";
             if (data!=false) {
                 for (var i=0;i<data.length;i++) {
-                    html+="<tr><td>"+data[i]['user_name']+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['dateofsignup']+"</td><td>"+data[i]['mobile']+"</td><td><a href='javascript:void(0)' class='btn btn-outline-danger' data-id="+data[i]['user_id']+" id='admin-delete-user'>delete</a></td></tr>";
+                    if (data[i]['is_admin']==1){
+                        html+="<tr><td>"+data[i]['user_name']+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['dateofsignup']+"</td><td>"+data[i]['mobile']+"</td><td>-----------</td></tr>"; 
+                    }
+                    else {
+                        html+="<tr><td>"+data[i]['user_name']+"</td><td>"+data[i]['name']+"</td><td>"+data[i]['dateofsignup']+"</td><td>"+data[i]['mobile']+"</td><td><a href='javascript:void(0)' class='btn btn-outline-danger' data-id="+data[i]['user_id']+" id='admin-delete-user'>delete</a></td></tr>";
+                    }
                 }
             }
             html+="</table>";
@@ -888,8 +893,11 @@ function defaultHtml(){
                 <div class="tiles-admin text-center"><p>Pending Users Requests</p><p>'+pendinguserrequest+'</p><p id="card-pending-user"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="userrequest">Pending User Requests</a></div>\
                 <div class="tiles-admin text-center"><p>Approved users Requests</p><p>'+approveduserrequest+'</p><p id="card-approved-user"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="approveduserrequests">Approved User Requests</a></div>\
                 <div class="tiles-admin text-center"><p>All Users</p><p>'+alluser+'</p><p id="card-all-users"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="allusers">All Users</a></div>\
-                <div class="tiles-admin text-center"><p>Servicable Locations</p><p>'+servicablelocation+'</p><p id="card-servicable-locations"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="managelocation">Servicable Locations</a></div>\
-            </div>';
+                <div class="tiles-admin text-center"><p>Servicable Locations</p><p>'+servicablelocation+'</p><p id="card-servicable-locations"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="managelocation">Servicable Locations</a></div></div>';
+                if (msg['riderequestslast']!=0) {
+                    html+='<table id="admin-pending-flash"><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th><th>Status</th><th>Action</th></tr>\
+                    <tr><td>'+msg["riderequestslast"]["from"]+'</td><td>'+msg["riderequestslast"]["to"]+'</td><td>'+msg["riderequestslast"]["cab_type"]+'</td><td>'+msg["riderequestslast"]["ride_date"]+'</td><td>'+msg["riderequestslast"]["total_distance"]+'</td><td>'+msg["riderequestslast"]["luggage"]+'</td><td>'+msg["riderequestslast"]["total_fare"]+'</td><td><div class="blink_me">Pending</div></td><td><a href="javascript:void(0)" id="ride-accept-flash" data-id='+msg["riderequestslast"]["ride_id"]+' class="btn btn-outline-success">accept</a><a href="javascript:void(0)" id="ride-reject-flash" data-id='+msg["riderequestslast"]["ride_id"]+' class="btn btn-outline-danger">reject</a></td></tr></table>';
+                }
             $('.page-content').html(html);
         },
         error: function(){
@@ -897,6 +905,40 @@ function defaultHtml(){
         }
     });
 }
+$('.page-content').on('click','#ride-accept-flash',function(){
+    var id=$(this).data('id');
+    $.ajax({
+        url: '../user/user.php',
+        method: 'post',
+        data: {
+            id: id,
+            rideaccept: true
+        },
+        success: function(msg){
+            location.reload();
+        },
+        error: function(){
+            alert("error");
+        }
+    });
+});
+$('.page-content').on('click','#ride-reject-flash',function(){
+    var id=$(this).data('id');
+    $.ajax({
+        url: '../user/user.php',
+        method: 'post',
+        data: {
+            id: id,
+            ridereject: true
+        },
+        success: function(msg){
+            location.reload();
+        },
+        error: function(){
+            alert("error");
+        }
+    });
+});
 $('#home-admin').click(function(){
     defaultHtml();
 });

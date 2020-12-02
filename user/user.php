@@ -550,6 +550,14 @@ if (isset($_POST['defaultload'])) {
     else {
         $msg['riderequest']=0;
     }
+    $data=$tblride->rideRequestsLast();
+    if ($data!=false) {
+        $row=$data->fetch_assoc();
+        $msg['riderequestslast']=$row;
+    }
+    else {
+        $msg['riderequestslast']=0;
+    }
     $data=$tblride->rideCompletedAll($sort);
     if ($data!=false) {
         $msg['completedrides']=$data->num_rows;
@@ -644,6 +652,14 @@ if (isset($_POST['defaultloaduser'])) {
     }
     else {
         $msg['totalexpanses']=0;
+    }
+    $data=$tblride->lastBooked($userid);
+    if ($data!=false) {
+        $row=$data->fetch_assoc();
+        $msg['lastbooked']=$row;
+    }
+    else {
+        $msg['lastbooked']=0;
     }
     print_r(json_encode($msg));
 }
