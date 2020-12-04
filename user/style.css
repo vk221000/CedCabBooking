@@ -305,9 +305,6 @@ nav.sticky {
     margin: 0 auto;
     position: relative;
 }
-/* #receipt-form h4{
-    border-bottom: 2px solid black;
-} */ 
 .bold-span{
     font-size: x-large;
     font-weight: 200;
@@ -316,10 +313,19 @@ nav.sticky {
 .blink_me {
     animation: blinker 1s linear infinite;
     color: red;
-  }
+}
   
-  @keyframes blinker {
+@keyframes blinker {
     50% {
-      opacity: 0;
+        opacity: 0;
     }
-  }
+}
+.table-type{
+    font-size: x-large;
+    color:black;
+    margin-left: 10px;
+}
+.bold-show-details{
+    font-size: x-large;
+    margin-left: 50px;
+}

@@ -2,10 +2,10 @@
 session_start();
 $error="";
 if (isset($_SESSION['user'])) {
-    header('Location:user/user_dashboard.php');
+    header('Location:user/');
 }
 if (isset($_SESSION['admin'])) {
-    header('Location:admin/admin_dashboard.php');
+    header('Location:admin/');
 }
 if (isset($_POST['submit'])) {
     include 'admin/tbl_user.php';
@@ -35,28 +35,30 @@ if (isset($_POST['submit'])) {
                             $luggage=$_SESSION['booking'][4];
                             $fare=$_SESSION['booking'][5];
                             $tblride->insertData($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare,$userid);
-                            header('location:user/user_dashboard.php');
+                            header('location:user/');
                         }
                         else{
                             unset($_SESSION['booking']);
-                            header('location:user/user_dashboard.php');
+                            header('location:user/');
                         }
                         
                     }
                     else {
-                        header('location:user/user_dashboard.php');
+                        header('location:user/');
                     }
                     
-                } elseif ($row['is_admin']==1) {
+                } 
+                elseif ($row['is_admin']==1) {
                     $_SESSION['admin']=array($row['user_name'],$row['user_id']);
-                    header('location:admin/admin_dashboard.php');
+                    header('location:admin/');
                 }
             }
             else {
                 $error="Kindly wait for the admin to grant you access";
             }
         }
-    } else {
+    } 
+    else {
         $error="username or password is incorrect";
     }
 }

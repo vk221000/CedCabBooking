@@ -1,5 +1,6 @@
 <?php
 session_start();
+//----------------------for users------------------------------
 if (isset($_POST['previousrides'])) {
     include '../admin/tbl_ride.php';
     $tblride=new tblRide();
@@ -81,62 +82,29 @@ if (isset($_POST['completedrides'])) {
         echo "false";
     }
 }
-if (isset($_POST['filterbycabtype'])) {
-    include '../admin/tbl_ride.php';
-    $tblride=new tblRide();
-    $cabtype= $_POST['cabtype'];
-    $data=$tblride->filterByCabType($cabtype,'asc');
-    $row=array();
-    if ($data!=false) {
-        while ($arr=$data->fetch_assoc()) {
-            $row[]=$arr;
-        }
-        print_r(json_encode($row));
-    }
-    else {
-        echo "false";
-    }
-}
-// --------------------------------
-if (isset($_POST['compfilterbycabtype'])) {
-    include '../admin/tbl_ride.php';
-    $tblride=new tblRide();
-    $cabtype= $_POST['cabtype'];
-    $data=$tblride->compFilterByCabType($cabtype,'asc');
-    $row=array();
-    if ($data!=false) {
-        while ($arr=$data->fetch_assoc()) {
-            $row[]=$arr;
-        }
-        print_r(json_encode($row));
-    }
-    else {
-        echo "false";
-    }
-}
-if (isset($_POST['compfilterbydateadmin'])) {
-    include '../admin/tbl_ride.php';
-    $tblride=new tblRide();
-    $datetype= $_POST['datetype'];
-    $data=$tblride->compFilterByDateAdmin($datetype);
-    $row=array();
-    if ($data!=false) {
-        while ($arr=$data->fetch_assoc()) {
-            $row[]=$arr;
-        }
-        print_r(json_encode($row));
-    }
-    else {
-        echo "false";
-    }
-}
-// ----------------------------------------------
 if (isset($_POST['filterbydateuser'])) {
     include '../admin/tbl_ride.php';
     $tblride=new tblRide();
     $datetype= $_POST['datetype'];
     $userid=$_SESSION['user'][1];
     $data=$tblride->filterByDateUser($datetype,$userid);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['filterbycompdateuser'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $datetype= $_POST['datetype'];
+    $userid=$_SESSION['user'][1];
+    $data=$tblride->filterByCompDateUser($datetype,$userid);
     $row=array();
     if ($data!=false) {
         while ($arr=$data->fetch_assoc()) {
@@ -155,6 +123,24 @@ if (isset($_POST['filterbycabtypeuser'])) {
     $cabtype= $_POST['cabtype'];
     $userid=$_SESSION['user'][1];
     $data=$tblride->filterByCabTypeUser($cabtype,$userid);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+
+if (isset($_POST['filterbycompcabtypeuser'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $cabtype= $_POST['cabtype'];
+    $userid=$_SESSION['user'][1];
+    $data=$tblride->filterByCompCabTypeUser($cabtype,$userid);
     $row=array();
     if ($data!=false) {
         while ($arr=$data->fetch_assoc()) {
@@ -207,6 +193,99 @@ if (isset($_POST['passwordreset'])) {
     $row=$data->fetch_assoc();
     print_r(json_encode($row));
 }
+//-----------------------------For Users----------------------------------------
+
+
+
+
+
+
+
+
+
+
+//---------------------For Admin-----------------------------------------------
+if (isset($_POST['filterbycabtype'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $cabtype= $_POST['cabtype'];
+    $data=$tblride->filterByCabType($cabtype,'asc');
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['compfilterbycabtype'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $cabtype= $_POST['cabtype'];
+    $data=$tblride->compFilterByCabType($cabtype,'asc');
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['compfilterbydateadmin'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $datetype= $_POST['datetype'];
+    $data=$tblride->compFilterByDateAdmin($datetype);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['reqdatesort'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $datetype= $_POST['datetype'];
+    $data=$tblride->reqFilterByDateAdmin($datetype);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['reqcarssort'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $cabtype= $_POST['cabtype'];
+    $data=$tblride->reqFilterByCabType($cabtype,'asc');
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+
 if (isset($_POST['passwordset'])) {
     include '../admin/tbl_user.php';
     $tbluser=new tblUser();
@@ -238,6 +317,22 @@ if (isset($_POST['riderequests'])) {
         echo "false";
     }
 }
+if (isset($_POST['riderequestsfaresort'])) {
+    $sort=$_POST['sort'];
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $data=$tblride->rideRequestsFareSort($sort);
+    if ($data!=false) {
+        $row=array();
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
 if (isset($_POST['invoice'])) {
     include '../admin/tbl_ride.php';
     $tblride=new tblRide();
@@ -256,6 +351,21 @@ if (isset($_POST['approveduserrequests'])) {
     $tbluser=new tblUser();
     $sort=$_POST['sort'];
     $data=$tbluser->approvedUserRequests($sort);
+    if ($data!=false) {
+        $row=array();
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    } else {
+        echo "false";
+    }
+}
+if (isset($_POST['approveduserrequestssortbyname'])) {
+    include '../admin/tbl_user.php';
+    $tbluser=new tblUser();
+    $sort=$_POST['sort'];
+    $data=$tbluser->approvedUserRequestsSortByName($sort);
     if ($data!=false) {
         $row=array();
         while ($arr=$data->fetch_assoc()) {
@@ -408,12 +518,71 @@ if (isset($_POST['filterbydateadmin'])) {
         echo "false";
     }
 }
+if (isset($_POST['canceledridescarssort'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $cabtype= $_POST['cabtype'];
+    $data=$tblride->canceledRidesCarsSort($cabtype);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
+if (isset($_POST['canceledridesdatesort'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $datetype= $_POST['datetype'];
+    $data=$tblride->canceledRidesDatesSort($datetype);
+    $row=array();
+    if ($data!=false) {
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print_r(json_encode($row));
+    }
+    else {
+        echo "false";
+    }
+}
 
 if (isset($_POST['canceledridesall'])) {
     include '../admin/tbl_ride.php';
     $tblride=new tblRide();
     $sort=$_POST['sort'];
     $data=$tblride->canceledRidesAll($sort);
+    if ($data!=false){
+        $row=array();
+        while ($arr=$data->fetch_assoc()) {
+            $row[]=$arr;
+        }
+        print(json_encode($row));
+    } else {
+        echo "false";
+    }
+}
+
+if (isset($_POST['ridecanceledbyuser'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $id=$_POST['id'];
+    $data=$tblride->RideCancelledByUser($id);
+    if ($data!=false){
+        echo true;
+    } else {
+        echo "false";
+    }
+}
+if (isset($_POST['canceledridesallfaresort'])) {
+    include '../admin/tbl_ride.php';
+    $tblride=new tblRide();
+    $sort=$_POST['sort'];
+    $data=$tblride->canceledRidesAllFareSort($sort);
     if ($data!=false){
         $row=array();
         while ($arr=$data->fetch_assoc()) {
@@ -503,11 +672,6 @@ if (isset($_POST['admindeleteuser'])) {
     }
 
 }
-
-
-
-
-
 if (isset($_POST['rideaccept'])) {
     $id=$_POST['id'];
     include_once '../admin/tbl_ride.php';
@@ -516,12 +680,6 @@ if (isset($_POST['rideaccept'])) {
         echo "ride accepted successfully";
     }
 }
-
-
-
-
-
-
 if (isset($_POST['ridereject'])) {
     $id=$_POST['id'];
     include_once '../admin/tbl_ride.php';
@@ -538,6 +696,14 @@ if (isset($_POST['allowuser'])) {
         echo "user accepted successfully";
     }
 }
+//----------------------For Admin------------------------------
+
+
+
+
+
+
+//-------------------------------------Default Load Admin Dashboard---------------------------------
 if (isset($_POST['defaultload'])) {
     include_once '../admin/tbl_ride.php';
     $tblride=new tblRide();
@@ -613,6 +779,7 @@ if (isset($_POST['defaultload'])) {
     }
     print_r(json_encode($msg));
 }
+//--------------------Default Load Admin Dashboard----------------------------------------
 
 
 
@@ -620,6 +787,9 @@ if (isset($_POST['defaultload'])) {
 
 
 
+
+
+//----------------------Default Load User Dashboard-----------------------------------------------
 if (isset($_POST['defaultloaduser'])) {
     include_once '../admin/tbl_ride.php';
     $tblride=new tblRide();
@@ -663,4 +833,5 @@ if (isset($_POST['defaultloaduser'])) {
     }
     print_r(json_encode($msg));
 }
+//---------------------------------Default Load User dashboard-----------------------
 ?>

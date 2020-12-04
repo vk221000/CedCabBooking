@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION['admin'])) {
-    header('Location:admin/');
+if (!isset($_SESSION['user'])) {
+    header('Location:../login.php');
 }
-include 'admin/tbl_location.php';
+include '../admin/tbl_location.php';
 $tbl=new tblLocation();
 ?>
 <!DOCTYPE html>
@@ -16,22 +16,22 @@ $tbl=new tblLocation();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="user/style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand logo-margin" href="javascript:void(0)"><h3><span class='logo-color'>Ced</span> Cab</h3></a>
-            <?php
-            if (isset($_SESSION['user'])) {
-                $html='<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="user/">Dashboard</a></li></ul>';    
-                echo $html;
-            }
-            ?>
-            <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" >
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Dashboard</a>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb">
               <span class="navbar-toggler-icon"></span>
             </button>
+          
             <div class="navbar-collapse collapse" id="navb">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -45,15 +45,15 @@ $tbl=new tblLocation();
                 </li>
                 <?php
                 if (isset($_SESSION['user'])) {
-                    $html='<li class="nav-item"><a class="nav-link" href="logout.php?logout">Logout</a></li>';
+                    $html='<li class="nav-item"><a class="nav-link" href="../logout.php?logout">Logout</a></li>';
                     echo $html;
                 } else {
-                    $html='<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>';
-                    $html.='<li class="nav-item"><a class="nav-link" href="signup.php">signup</a></li>';
+                    $html='<li class="nav-item"><a class="nav-link" href="../login.php">Login</a></li>';
                     echo $html;
                 }
                 ?>
               </ul>
+              
             </div>
           </nav>
     </header>
@@ -117,6 +117,7 @@ $tbl=new tblLocation();
                             <input type="text" class="form-control"  name="luggage" id="luggage" aria-describedby="validationTooltipluggagePrepend" placeholder="Enter Weight in KG" required>
                         </div>
                         <button type="submit" class="btn btn-primary form-control form-btn" id="submit" data-toggle="modal" data-target="#myModal">Calculate Fare</button>     
+                        
                         <div class="modal" id="myModal">
                             <div class="modal-dialog">
                             <div class="modal-content">
@@ -160,8 +161,3 @@ $tbl=new tblLocation();
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-

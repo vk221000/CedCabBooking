@@ -91,7 +91,8 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
             
         }
         if (isset($_POST['submit'])) {
-            echo $fare;
+            $details=array($pickup,$drop,$cabtype,$luggage,$totaldistance,$fare);
+            print_r(json_encode($details));
         }
         elseif (isset($_POST['bookcab'])) {
             if (isset($_SESSION['user'])) {
@@ -116,7 +117,7 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
         }
     }
     else{
-        echo "please fill pickup, drop and cab type";
+        print_r(json_encode("please fill pickup, drop and cab type"));
     }
 }
 function luggageCharge($weight,$cabtype) {

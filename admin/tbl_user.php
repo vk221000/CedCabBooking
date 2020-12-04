@@ -54,7 +54,7 @@
             return false;
         }
         public function passwordReset($username,$password, $oldpassword){
-            $sql="SELECT * FROM `tbl_user` WHERE `password`='$oldpassword'";
+            $sql="SELECT * FROM `tbl_user` WHERE `user_name`='$username' AND `password`='$oldpassword'";
             $data=$this->conn->query($sql);
             if ($data->num_rows>0){
                 $sql="UPDATE `tbl_user` SET `password`='$password' WHERE `user_name`='$username'";
@@ -92,6 +92,21 @@
 
         }
         public function approvedUserRequests($sort){
+            if ($sort=="asc"){
+                $sql="SELECT * FROM `tbl_user` WHERE `isblock`='1' ORDER BY `dateofsignup` ASC";
+            }
+            else if ($sort=="desc"){
+                $sql="SELECT * FROM `tbl_user` WHERE `isblock`='1' ORDER BY `dateofsignup` DESC";
+            }else {
+                $sql="SELECT * FROM `tbl_user` WHERE `isblock`='1'";
+            }
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function approvedUserRequestsSortByName($sort){
             if ($sort=="asc"){
                 $sql="SELECT * FROM `tbl_user` WHERE `isblock`='1' ORDER BY `name` ASC";
             }

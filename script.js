@@ -1,3 +1,5 @@
+
+//---------------jQuery for landing page for booking a ride----------------------
 $('#inputGroupSelect03').click(function(){
     var value=$(this).val();
     if (value=='CedMicro') {
@@ -42,6 +44,7 @@ $('#submit').click(function(){
                 luggage: luggage,
                 submit: true
             },
+            dataType: 'json',
             success: function(msg){
                 if (msg=="please fill pickup, drop and cab type"){
                     $('#book-cab').hide();
@@ -49,7 +52,8 @@ $('#submit').click(function(){
                 }
                 else{
                     $('#book-cab').show();
-                    $('#message-show').text("Total fare: ₹"+msg);
+                    var html="<div class='text-justify'><div><span class='bold-show-details'>FROM: </span>"+msg[0]+"</div><div><span class='bold-show-details'>To: </span>"+msg[1]+"</div><div><span class='bold-show-details'>CabType: </span>"+msg[2]+"</div><div><span class='bold-show-details'>Luggage(KG): </span>"+msg[3]+"</div><div><span class='bold-show-details'>TotalDistance(KM): </span>"+msg[4]+"</div><div><span class='bold-show-details'>Total Fare(₹): </span>"+msg[5]+"</div></div>";
+                    $('#message-show').html(html);
                 }
             },
             error: function(){

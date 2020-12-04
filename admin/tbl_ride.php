@@ -46,9 +46,23 @@
             }
             return false;
         }
-        
+        public function rideRequestsFareSort($sort){
+            if ($sort=='asc'){
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' ORDER BY `total_fare`";
+            }
+            else if ($sort=='desc'){
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' ORDER BY `total_fare`";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1'";
+            }
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
         public function invoice($rideid){
-            $sql="SELECT * FROM `tbl_ride` WHERE `ride_id`='$rideid'";
+            $sql="SELECT `user`.`user_name`, `ride`.* FROM `tbl_ride` AS `ride` INNER JOIN `tbl_user` AS `user` ON `ride`.`user_id` = `user`.`user_id` WHERE `ride`.`ride_id`='$rideid'";
             $data=$this->conn->query($sql);
             if ($data->num_rows>0) {
                 return $data;
@@ -144,7 +158,7 @@
             return false;
         }
         public function rideRequestsLast(){
-            $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' ORDER BY `ride_date` ASC";
+            $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' ORDER BY `ride_date` DESC";
             $data=$this->conn->query($sql);
             if ($data->num_rows>0) {
                 return $data;
@@ -188,6 +202,53 @@
             }
             elseif ($sort=='desc'){
                 $sql="SELECT * FROM `tbl_ride` WHERE `status`='0' ORDER BY `ride_date` DESC";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0'";
+            }
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function canceledRidesCarsSort($cabtype){
+            $sql="SELECT * FROM `tbl_ride` WHERE `cab_type`='$cabtype'";
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        
+        public function canceledRidesDatesSort($datetype){
+            if ($datetype=='LastWeek') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY `ride_date`";
+            }
+            elseif ($datetype=='LastMonth') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 30 DAY) ORDER BY `ride_date`";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0'";
+            }
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function RideCancelledByUser($id){
+            $sql="UPDATE `tbl_ride` SET `status`='0' WHERE `ride_id`='$id'";
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return true;
+            }
+            return false;
+        }
+        public function canceledRidesAllFareSort($sort){
+            if ($sort=='asc') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0' ORDER BY `total_fare` ASC";
+            }
+            elseif ($sort=='desc'){
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='0' ORDER BY `total_fare` DESC";
             }else {
                 $sql="SELECT * FROM `tbl_ride` WHERE `status`='0'";
             }
@@ -261,8 +322,32 @@
             }
             return false;
         }
+        public function reqFilterByCabType($cabtype,$sort){
+            if ($sort=='asc') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' AND `cab_type`='$cabtype' ORDER BY `ride_date` ASC";
+            }
+            elseif ($sort=='desc'){
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' AND `cab_type`='$cabtype'  ORDER BY `ride_date` DESC";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE `status`='1' AND `cab_type`='$cabtype'";
+            }
+            
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
         public function filterByCabTypeUser($cabtype,$userid){
             $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND `cab_type`='$cabtype'";
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function filterByCompCabTypeUser($cabtype,$userid){
+            $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND `status`='2' AND `cab_type`='$cabtype'";
             $data=$this->conn->query($sql);
             if ($data->num_rows>0) {
                 return $data;
@@ -301,6 +386,22 @@
             }
             return false;
         }
+        public function reqFilterByDateAdmin($datetype){
+            if ($datetype=='LastWeek') {
+                $sql="SELECT * FROM `tbl_ride` WHERE  `status`='1' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY `ride_date`";
+            }
+            elseif ($datetype=='LastMonth') {
+                $sql="SELECT * FROM `tbl_ride` WHERE  `status`='1' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 30 DAY) ORDER BY `ride_date`";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE  `status`='1'";
+            }
+            
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
         public function filterByDateUser($datetype,$userid){
             if ($datetype=='LastWeek') {
                 $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY `ride_date`";
@@ -309,6 +410,22 @@
                 $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 30 DAY) ORDER BY `ride_date`";
             }else {
                 $sql="SELECT * FROM `tbl_ride`";
+            }
+            
+            $data=$this->conn->query($sql);
+            if ($data->num_rows>0) {
+                return $data;
+            }
+            return false;
+        }
+        public function filterByCompDateUser($datetype,$userid){
+            if ($datetype=='LastWeek') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND `status`='2' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY `ride_date`";
+            }
+            elseif ($datetype=='LastMonth') {
+                $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND  `status`='2' AND `ride_date`>DATE_SUB(NOW(), INTERVAL 30 DAY) ORDER BY `ride_date`";
+            }else {
+                $sql="SELECT * FROM `tbl_ride` WHERE `user_id`='$userid' AND  `status`='2'";
             }
             
             $data=$this->conn->query($sql);

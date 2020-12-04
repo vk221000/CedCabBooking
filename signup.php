@@ -3,10 +3,10 @@ session_start();
 $success="";
 $failure="";
 if (isset($_SESSION['user'])) {
-    header('Location:user/user_dashboard.php');
+    header('Location:user/');
 }
 if (isset($_SESSION['admin'])) {
-    header('Location:admin/admin_dashboard.php');
+    header('Location:admin/');
 }
 if (isset($_POST['submit'])) {
     include 'admin/tbl_user.php';
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
         $password=md5($password1);
         if (!$tbluser->checkUserDuplicate($username)) {
             if ($tbluser->insertuser($username,$name,$mobile,$password)) {
-                $success="signup completed";
+                $success="signup completed but approval is needed from admin";
             }
         }
         else {
@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
         }
     }
     else {
-        $failure="password and repassword do not match";
+        $failure="password and repassword are not matching";
     }
 }
 ?>

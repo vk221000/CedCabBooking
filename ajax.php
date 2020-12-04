@@ -17,6 +17,7 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
         $cabtype=$_POST['cabtype'];
         $luggage=$_POST['luggage'];
         $totaldistance=abs($distancechart[$pickup]-$distancechart[$drop]);
+        $temp=$totaldistance;
         if ($cabtype=='CedMicro') {
             $fixrate=50;
             if ($totaldistance>0 && $totaldistance<=10){
@@ -91,7 +92,8 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
             
         }
         if (isset($_POST['submit'])) {
-            echo $fare;
+            $details=array($pickup,$drop,$cabtype,$luggage,$totaldistance,$fare);
+            print_r(json_encode($details));
         }
         elseif (isset($_POST['bookcab'])) {
             if (isset($_SESSION['user'])) {
@@ -99,13 +101,13 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
                 $userid=$_SESSION['user'][1];
                 $tblride=new tblRide();
                 if ($tblride->insertData($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare,$userid)===true) {
-                    echo "please wait for the confirmation";
+                    print_r(json_encode("please wait for the confirmation"));
                 } else {
                     echo "error";
                 } 
             }
             else {
-                $_SESSION['booking']=array($pickup,$drop,$cabtype,$totaldistance,$luggage,$fare);
+                $_SESSION['booking']=array($pickup,$drop,$cabtype,$temp,$luggage,$fare);
                 $_SESSION['start'] = time();
                 $_SESSION['expire'] = $_SESSION['start'] + (3 * 60);
                 echo "refer to login page";
@@ -113,7 +115,7 @@ if (isset($_POST['submit']) || isset($_POST['bookcab'])) {
         }
     }
     else{
-        echo "please fill pickup, drop and cab type";
+        print_r(json_encode("please fill pickup, drop and cab type"));
     }
 }
 

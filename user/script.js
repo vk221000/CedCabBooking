@@ -1,3 +1,5 @@
+
+//-----------------------Landing Page jQueries For User Booking For Rides----------------------------------------
 $('#inputGroupSelect03').click(function(){
     var value=$(this).val();
     if (value=='CedMicro') {
@@ -42,6 +44,7 @@ $('#submit').click(function(){
                 luggage: luggage,
                 submit: true
             },
+            dataType: 'json',
             success: function(msg){
                 if (msg=="please fill pickup, drop and cab type"){
                     $('#book-cab').hide();
@@ -49,7 +52,8 @@ $('#submit').click(function(){
                 }
                 else{
                     $('#book-cab').show();
-                    $('#message-show').text("Total fare: ₹"+msg);
+                    var html="<div class='text-justify'><div><span class='bold-show-details'>FROM: </span>"+msg[0]+"</div><div><span class='bold-show-details'>To: </span>"+msg[1]+"</div><div><span class='bold-show-details'>CabType: </span>"+msg[2]+"</div><div><span class='bold-show-details'>Luggage(KG): </span>"+msg[3]+"</div><div><span class='bold-show-details'>TotalDistance(KM): </span>"+msg[4]+"</div><div><span class='bold-show-details'>Total Fare(₹): </span>"+msg[5]+"</div></div>";
+                    $('#message-show').html(html);
                 }
             },
             error: function(){
@@ -75,36 +79,109 @@ $('#book-cab').click(function(){
         },
         success: function(msg){
             $('#submit').text(msg);
-            setTimeout(function(){$(location).attr('href','user_dashboard.php');}, 3000);
+            setTimeout(function(){$(location).attr('href','index.php');}, 3000);
         },
         error: function(){
             alert(error);
         }
     });
 });
+//-------------------Landing Page for booking rides for user-------------------------------------
+
+
+
+
+
 
 
 
 
 
 // jQuery for user dashboard ajax requests
-$('#previousrides').click(function(){
-    previousRides(0);
+//---------------------Completed Rides User---------------------------------
+function completeRidesFilterUser(){
+    var html="<span class='table-type'>Completed Rides</span><span id='select-fields' class='form-group'><select name='cars' id='comp-cars-user'>\
+                <option>All</option>\
+                <option value='CedMicro'>CedMicro</option>\
+                <option value='CedMini'>CedMini</option>\
+                <option value='CedRoyal'>CedRoyal</option>\
+                <option value='CedSUV'>CedSUV</option>\
+            </select>\
+            <select name='datesort' id='comp-datesort-user'>\
+                <option>All</option>\
+                </th><th></th><th></th><th></th><th></th></tr>\
+                <option value='LastWeek'>LastWeek</option>\
+                <option value='LastMonth'>LastMonth</option>\
+            </select></span>";
+    return html;
+}
+$('.page-content').on('click','#comp-datesort-user',function(){
+    var datetype=$(this).val();
+    if (datetype!='All'){
+        $.ajax({
+            url: 'user.php',
+            method: 'post',
+            data: {
+                datetype: datetype,
+                filterbycompdateuser: true
+            },
+            dataType: 'json',
+            success: function(row){
+                html+="<table id='customers'><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-completed-user-asc'>&#8657;</a><a href='javascript:void(0)' id='rides-completed-user-desc'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-comp-user-asc'>&#8657;</a><a href='javascript:void(0)' id='fare-comp-user-desc'>&#8659;</a></th></tr>";
+                if (row!=false) {
+                    for (var i=0;i<row.length;i++){
+                        html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td></tr>";
+                    }
+                }
+                $('#customers').html(html);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    }
 });
-$('.page-content').on('click','#previousrides',function(){
-    previousRides(0);
+$('.page-content').on('click','#comp-cars-user',function(){
+    var cabtype=$(this).val();
+    if (cabtype!='All'){
+        $.ajax({
+            url: 'user.php',
+            method: 'post',
+            data: {
+                cabtype: cabtype,
+                filterbycompcabtypeuser: true
+            },
+            dataType: 'json',
+            success: function(row){
+                html+="<table id='customers'><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-completed-user-asc'>&#8657;</a><a href='javascript:void(0)' id='rides-completed-user-desc'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-comp-user-asc'>&#8657;</a><a href='javascript:void(0)' id='fare-comp-user-desc'>&#8659;</a></th></tr>";
+                if (row!=false) {
+                    for (var i=0;i<row.length;i++){
+                        html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td></tr>";
+                    }
+                }
+                html+="</table>";
+                $('#customers').html(html);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    }
 });
-$('.page-content').on('click','#rides-all-user-asc',function(){
-    var sort="asc";
-    previousRides(sort);
-});
-$('.page-content').on('click','#rides-all-user-desc',function(){
-    var sort="desc";
-    previousRides(sort);
-});
+//---------------Completed Rides User------------------------------------
 
+
+
+
+
+
+
+
+
+
+//-----------------------------------All Rides Users-----------------------------------------
 function allRidesFilter(){
-    var html="<div id='select-fields' class='form-group'><select name='cars' id='cars'>\
+    var html="<span class='table-type'>All Rides</span><span id='select-fields' class='form-group'><select name='cars' id='cars'>\
                 <option>All</option>\
                 <option value='CedMicro'>CedMicro</option>\
                 <option value='CedMini'>CedMini</option>\
@@ -116,7 +193,7 @@ function allRidesFilter(){
                 </th><th></th><th></th><th></th><th></th></tr>\
                 <option value='LastWeek'>LastWeek</option>\
                 <option value='LastMonth'>LastMonth</option>\
-            </select></div>";
+            </select></span>";
     return html;
 }
 $('.page-content').on('click','#datesort',function(){
@@ -172,6 +249,20 @@ $('.page-content').on('click','#cars',function(){
         });
     }
 });
+$('#previousrides').click(function(){
+    previousRides(0);
+});
+$('.page-content').on('click','#previousrides',function(){
+    previousRides(0);
+});
+$('.page-content').on('click','#rides-all-user-asc',function(){
+    var sort="asc";
+    previousRides(sort);
+});
+$('.page-content').on('click','#rides-all-user-desc',function(){
+    var sort="desc";
+    previousRides(sort);
+});
 function previousRides(sort){
     $.ajax({
         url: 'user.php',
@@ -203,7 +294,40 @@ $('.page-content').on('click','#fare-all-user-desc',function(){
     var sort="desc";
     previousRidesSortedByFareUser(sort);
 });
+function previousRidesSortedByFareUser(sort){
+    $.ajax({
+        url: 'user.php',
+        method: 'post',
+        data: {
+            sort:sort,
+            previousridessortedbyfareuser: true
+        },
+        dataType: 'json',
+        success: function(row){
+            var html="<tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-all-user-asc'>&#8657;</a><a href='javascript:void(0)' id='rides-all-user-desc'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-all-user-asc'>&#8657;</a><a href='javascript:void(0)' id='fare-all-user-desc'>&#8659;</a></th></tr>";
+            for (var i=0;i<row.length;i++){
+                html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td></tr>";
+            }
+            html+="</table>";
+            $('#customers').html(html);
+        },
+        error: function(){
+            alert(error);
+        }
+    });
+}
+//-------------------------All Rides User-----------------------------------
 
+
+
+
+
+
+
+
+
+
+//---------------------Pending Rides User---------------------------------
 $('#pendingrides').click(function(){
     pendingRides();
 });
@@ -219,9 +343,9 @@ function pendingRides(){
         },
         dataType: 'json',
         success: function(row){
-            var html="<table id='customers'><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th></tr>";
+            var html="<span class='table-type'>Pending Rides</span><table id='customers'><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th><th>Action</th></tr>";
             for (var i=0;i<row.length;i++){
-                html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td></tr>";
+                html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td><td><a href='javascript:void(0)' id='ridecancelbyuser' class='btn btn-outline-danger' data-id='"+row[i]['ride_id']+"'>cancel</a></td></tr>";
             }
             html+="</table>";
             $('.page-content').html(html);
@@ -231,6 +355,48 @@ function pendingRides(){
         }
     });
 }
+$('.page-content').on('click','#ridecancelbyuser',function(){
+    var id=$(this).data('id');
+    var r = confirm("Are you sure you want to cancel the ride!");
+    if (r == true) {
+        $.ajax({
+            url:'user.php',
+            method: 'post',
+            data: {
+                id:id,
+                ridecanceledbyuser: true
+            },
+            success: function(msg){
+                pendingRides();
+            },
+            error:function(){
+                alert('error');
+            }
+        });
+    }
+});
+//--------------------Pending Rides User---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------Completed Rides User----------------------------------------
 $('#completedrides').click(function(){
     completedRides(0);
 });
@@ -263,7 +429,7 @@ function completedRides(sort){
         },
         dataType: 'json',
         success: function(row){
-            var html=allRidesFilter();
+            var html=completeRidesFilterUser();
             html+="<table id='customers'><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-completed-user-asc'>&#8657;</a><a href='javascript:void(0)' id='rides-completed-user-desc'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-comp-user-asc'>&#8657;</a><a href='javascript:void(0)' id='fare-comp-user-desc'>&#8659;</a></th></tr>";
             if (row!=false) {
                 for (var i=0;i<row.length;i++){
@@ -300,29 +466,20 @@ function farecompletedRidesSort(sort){
         }
     });
 }
-function previousRidesSortedByFareUser(sort){
-    $.ajax({
-        url: 'user.php',
-        method: 'post',
-        data: {
-            sort:sort,
-            previousridessortedbyfareuser: true
-        },
-        dataType: 'json',
-        success: function(row){
-            var html="<tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-all-user-asc'>&#8657;</a><a href='javascript:void(0)' id='rides-all-user-desc'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-all-user-asc'>&#8657;</a><a href='javascript:void(0)' id='fare-all-user-desc'>&#8659;</a></th></tr>";
-            for (var i=0;i<row.length;i++){
-                html+="<tr><td>"+row[i]['from']+"</td><td>"+row[i]['to']+"</td><td>"+row[i]['cab_type']+"</td><td>"+row[i]['ride_date']+"</td><td>"+row[i]['total_distance']+"</td><td>"+row[i]['luggage']+"</td><td>"+row[i]['total_fare']+"</td></tr>";
-            }
-            html+="</table>";
-            $('#customers').html(html);
-        },
-        error: function(){
-            alert(error);
-        }
-    });
-}
+//---------------------Completed Rides User----------------------------------------------
+
+
+
+
+
+
+
+
+//------------Profile Management User----------------------------------
 $('#editprofile').click(function(){
+    profileEditUser();
+});
+function profileEditUser(){
     $.ajax({
         url: 'user.php',
         method: 'post',
@@ -357,25 +514,33 @@ $('#editprofile').click(function(){
             alert("error");
         }
     });
-});
+}
 $('.page-content').on('click','#updateprofile',function(){
     var name=$('#name').val();
+    name=name.trim();
     var mobile=$('#mobile').val();
-    $.ajax({
-        url: 'user.php',
-        method: 'post',
-        data: {
-            name: name,
-            mobile: mobile,
-            updateprofile: true
-        },
-        success: function(msg){
-            $('.page-content').html("<div class='success text-center'>"+msg+"</div>");
-        },
-        error: function(){
-            alert(error);
-        }
-    });
+    mobile=mobile.trim();
+    if (name=='' || mobile=='' || name.length<3 || isNaN(mobile)) {
+        alert('please insert name and mobile number');
+        profileEditUser();
+    }
+    else {
+        $.ajax({
+            url: 'user.php',
+            method: 'post',
+            data: {
+                name: name,
+                mobile: mobile,
+                updateprofile: true
+            },
+            success: function(msg){
+                $('.page-content').html("<div class='success text-center'>"+msg+"</div>");
+            },
+            error: function(){
+                alert(error);
+            }
+        });
+    }
 });
 $('#resetpassword').click(function(){
     $.ajax({
@@ -415,30 +580,50 @@ $('.page-content').on('click','#updatepassword',function(){
     var username=$('#username').val();
     var oldpassword=$('#oldpassword').val();
     var password=$('#password').val();
-    $.ajax({
-        url: 'user.php',
-        method: 'post',
-        data: {
-            username: username,
-            oldpassword: oldpassword,
-            password: password,
-            passwordset: true
-        },
-        success: function(msg){
-            if (msg=="true") {
-                $('.page-content').html("<div class='success text-center'>password successfully updated</div>");
-                setTimeout(function(){$(location).attr('href','../logout.php?logout');}, 3000);
+    password=password.trim();
+    if (password=='' || password.length<3) {
+        alert('please enter new password');
+    }
+    else {
+        $.ajax({
+            url: 'user.php',
+            method: 'post',
+            data: {
+                username: username,
+                oldpassword: oldpassword,
+                password: password,
+                passwordset: true
+            },
+            success: function(msg){
+                if (msg=="true") {
+                    $('.page-content').html("<div class='success text-center'>password successfully updated</div>");
+                    setTimeout(function(){$(location).attr('href','../logout.php?logout');}, 3000);
+                }
+                else {
+                    $('.page-content').html("<div class='error text-center'>old password does not match</div>");
+                }
+            },
+            error: function(){
+                alert(error);
             }
-            else {
-                $('.page-content').html("<div class='error text-center'>old password does not match</div>");
-            }
-            
-        },
-        error: function(){
-            alert(error);
-        }
-    });
+        });
+    }  
 });
+//----------------------------Profile Management User----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------Default Load on user dashboard------------------------------------------
 function defaultHtml(){
     $.ajax({
         url: 'user.php',
@@ -458,8 +643,8 @@ function defaultHtml(){
                 <div class="tiles text-center"><p>All Rides</p><p>'+allrides+'</p><p id="card-all-rides"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="previousrides">All Rides</a></div>\
                 <div class="tiles text-center"><p>Total Expanses</p><p>₹ '+totalexpanses+'</p><p id="card-total-expanses"></p><a href="javascript:void(0)" class="btn btn-outline-info" id="totalexpanses">Total Expanses</a></div></div>';
                 if (msg["lastbooked"]!=0) {
-                    html+='<table id="customer-pending-flash"><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th><th>Status</th></tr>\
-                    <tr><td>'+msg["lastbooked"]["from"]+'</td><td>'+msg["lastbooked"]["to"]+'</td><td>'+msg["lastbooked"]["cab_type"]+'</td><td>'+msg["lastbooked"]["ride_date"]+'</td><td>'+msg["lastbooked"]["total_distance"]+'</td><td>'+msg["lastbooked"]["luggage"]+'</td><td>'+msg["lastbooked"]["total_fare"]+'</td><td><div class="blink_me">Pending</div></td></tr></table>';    
+                    html+='<table id="customer-pending-flash"><tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)</th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)</th><th>Status</th><th>Action</th></tr>\
+                    <tr><td>'+msg["lastbooked"]["from"]+'</td><td>'+msg["lastbooked"]["to"]+'</td><td>'+msg["lastbooked"]["cab_type"]+'</td><td>'+msg["lastbooked"]["ride_date"]+'</td><td>'+msg["lastbooked"]["total_distance"]+'</td><td>'+msg["lastbooked"]["luggage"]+'</td><td>'+msg["lastbooked"]["total_fare"]+'</td><td><div class="blink_me">Pending</div></td><td><a href="javascript:void(0)" id="ridecancelbyuserflash" class="btn btn-outline-danger" data-id="'+msg["lastbooked"]["ride_id"]+'">cancel</a></td></tr></table>';    
                 }
                 $('.page-content').html(html);
         },
@@ -468,9 +653,30 @@ function defaultHtml(){
         }
     });
 }
+$('.page-content').on('click','#ridecancelbyuserflash',function(){
+    var id=$(this).data('id');
+    var r = confirm("Are you sure you want to cancel the ride!");
+    if (r == true) {
+        $.ajax({
+            url:'user.php',
+            method: 'post',
+            data: {
+                id:id,
+                ridecanceledbyuser: true
+            },
+            success: function(msg){
+                location.reload();
+            },
+            error:function(){
+                alert('error');
+            }
+        });
+    }
+});
 $('#home-user').click(function(){
     defaultHtml();
 });
 $(document).ready(function(){
     defaultHtml();
 });
+//------------------------------Default Load on User Dashboard----------------------
