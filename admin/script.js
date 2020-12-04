@@ -413,7 +413,7 @@ function allRidesAdminSortByDate(sort){
             var html="<tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-sort-asc-admin'>&#8657;</a><a href='javascript:void(0)' id='rides-sort-desc-admin'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-comp-sort-asc-admin'>&#8657;</a><a href='javascript:void(0)' id='fare-comp-sort-desc-admin'>&#8659;</a></th><th>Action</th></tr>";
             if (data!=false) {
                 for (var i=0;i<data.length;i++) {
-                    html+="<tr><td>"+data[i]['from']+"</td><td>"+data[i]['to']+"</td><td>"+data[i]['cab_type']+"</td><td>"+data[i]['ride_date']+"</td><td>"+data[i]['total_distance']+"</td><td>"+data[i]['luggage']+"</td><td>"+data[i]['total_fare']+"</td><td><a href='javascript:void(0)' id='invoice' data-id='"+data[i]['total_fare']+"'>invoice</a></td></tr>";
+                    html+="<tr><td>"+data[i]['from']+"</td><td>"+data[i]['to']+"</td><td>"+data[i]['cab_type']+"</td><td>"+data[i]['ride_date']+"</td><td>"+data[i]['total_distance']+"</td><td>"+data[i]['luggage']+"</td><td>"+data[i]['total_fare']+"</td><td><a href='javascript:void(0)' id='invoice' data-id='"+data[i]['ride_id']+"'>invoice</a></td></tr>";
                 }
             }
             $('#customers').html(html);
@@ -489,7 +489,7 @@ function allRidesAdminSortByFare(sort){
             var html="<tr><th>From</th><th>To</th><th>Cab Type</th><th>RideDate(YYYY-MM-DD)<a href='javascript:void(0)' id='rides-sort-asc-admin'>&#8657;</a><a href='javascript:void(0)' id='rides-sort-desc-admin'>&#8659;</a></th><th>TotalDistance(KM)</th><th>Luggage(KG)</th><th>TotalFare (₹)<a href='javascript:void(0)' id='fare-comp-sort-asc-admin'>&#8657;</a><a href='javascript:void(0)' id='fare-comp-sort-desc-admin'>&#8659;</a></th><th>Action</th></tr>";
             if (data!=false) {
                 for (var i=0;i<data.length;i++) {
-                    html+="<tr><td>"+data[i]['from']+"</td><td>"+data[i]['to']+"</td><td>"+data[i]['cab_type']+"</td><td>"+data[i]['ride_date']+"</td><td>"+data[i]['total_distance']+"</td><td>"+data[i]['luggage']+"</td><td>"+data[i]['total_fare']+"</td><td><a href='javascript:void(0)' id='invoice' data-id='"+data[i]['total_fare']+"'>invoice</a></td></tr>";
+                    html+="<tr><td>"+data[i]['from']+"</td><td>"+data[i]['to']+"</td><td>"+data[i]['cab_type']+"</td><td>"+data[i]['ride_date']+"</td><td>"+data[i]['total_distance']+"</td><td>"+data[i]['luggage']+"</td><td>"+data[i]['total_fare']+"</td><td><a href='javascript:void(0)' id='invoice' data-id='"+data[i]['ride_id']+"'>invoice</a></td></tr>";
                 }
             }
             $('#customers').html(html);
