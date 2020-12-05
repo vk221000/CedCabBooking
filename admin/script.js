@@ -1052,7 +1052,7 @@ $('.page-content').on('click','#updateprofile',function(){
     name=name.trim();
     var mobile=$('#mobile').val();
     mobile=mobile.trim();
-    if (name=='' || mobile=='' || name.length<3 || mobile.length<3) {
+    if (name=='' || mobile=='' || name.length<3 || isNaN(mobile)) {
         alert('please insert name and mobile fields');
         editProfile();
     }
@@ -1191,7 +1191,7 @@ $('.page-content').on('click','#locationadd',function(){
     location=location.trim();
     var distance=$('#distance').val();
     distance=distance.trim();
-    if (location=='' || distance== '' || distance.length<0) {
+    if (location=='' || distance== '' || distance<0) {
         alert('please add distance and locations');
         locationAdd();
     }
@@ -1306,8 +1306,8 @@ $('.page-content').on('click','#location-edit-submit',function(){
     distance=distance.trim();
     var isavailable=$('#isavailable').val();
     isavailable=isavailable.trim();
-    if (location=='' || distance=='' || isavailable=='' || isNaN(isavailable) || isNaN(distance) || distance.length<0) {
-        alert("please add location and distance, also is available as 0 or 1");
+    if (location=='' || distance=='' || isavailable=='' || isNaN(isavailable) || isNaN(distance) || distance<0) {
+        alert("please add location and distance, also isavailable as 0 or 1");
     }
     else {
         $.ajax({
