@@ -297,13 +297,15 @@ nav.sticky {
 }
 #receipt-form{
     text-align: center;
-    padding: 10px 10px 60px 10px;
+    padding: 10px 10px 60px 100px;
     color: white;
     background-color: cadetblue;
     width: 50%;
-    position: absolute;
+    /* position: absolute; */
     margin: 0 auto;
     position: relative;
+    text-align: justify;
+    margin-left: 300px;
 }
 .bold-span{
     font-size: x-large;

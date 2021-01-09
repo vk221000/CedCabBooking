@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
             </div>
                 <label for="mobile">Mobile</label>
             <div>
-                <input type="number" name="mobile" id="mobile" placeholder="mobile.." required>
+                <input type="number" name="mobile" id="mobile" min='1' placeholder="mobile.." required>
             </div>
                 <label for="password1">Password</label>
             <div>

@@ -367,7 +367,29 @@ $('.page-content').on('click','#ridecancelbyuser',function(){
                 ridecanceledbyuser: true
             },
             success: function(msg){
+                alert('ride canceled successfully by you!');
                 pendingRides();
+            },
+            error:function(){
+                alert('error');
+            }
+        });
+    }
+});
+$('.page-content').on('click','#ridecancelbyuserflash',function(){
+    var id=$(this).data('id');
+    var r = confirm("Are you sure you want to cancel the ride!");
+    if (r == true) {
+        $.ajax({
+            url:'user.php',
+            method: 'post',
+            data: {
+                id:id,
+                ridecanceledbyuser: true
+            },
+            success: function(msg){
+                alert('ride canceled successfully by you!');
+                location.reload();
             },
             error:function(){
                 alert('error');
@@ -653,26 +675,6 @@ function defaultHtml(){
         }
     });
 }
-$('.page-content').on('click','#ridecancelbyuserflash',function(){
-    var id=$(this).data('id');
-    var r = confirm("Are you sure you want to cancel the ride!");
-    if (r == true) {
-        $.ajax({
-            url:'user.php',
-            method: 'post',
-            data: {
-                id:id,
-                ridecanceledbyuser: true
-            },
-            success: function(msg){
-                location.reload();
-            },
-            error:function(){
-                alert('error');
-            }
-        });
-    }
-});
 $('#home-user').click(function(){
     defaultHtml();
 });
