@@ -75,10 +75,10 @@ if (isset($_POST['submit'])) {
             <div>
                 <input type="submit" value="SIGN UP" name="submit" id="submit">
             </div>
+            <div class="success warning-message"><?php echo $success; ?></div>
+            <div class="error warning-message"><?php echo $failure; ?></div>
         </form>
     </div>
-    <div class="success warning-message"><?php echo $success; ?></div>
-    <div class="error warning-message"><?php echo $failure; ?></div>
     <footer class="footer-dashboard-signup">
         <div>copyrights &copy; <span class='logo-color'>Ced</span>Cab</div>
     </footer>
