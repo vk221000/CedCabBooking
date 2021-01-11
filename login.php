@@ -94,9 +94,9 @@ if (isset($_POST['submit'])) {
             <div>
                 <input type="submit" value="LOG IN" name="submit" id="submit">
             </div>
+             <div class="error warning-message"><?php echo $error; ?></div>
         </form>
     </div>
-    <div class="error warning-message"><?php echo $error; ?></div>
     <div class="page-content"></div>
     <footer class="footer-dashboard-signup">
         <div>copyrights &copy; <span class='logo-color'>Ced</span>Cab</div>
